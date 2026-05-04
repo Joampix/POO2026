@@ -1,0 +1,23 @@
+# Archivos de configuración de Qt Creator
+*.user
+*.user.*
+
+# Directorios de compilación (build)
+build*/
+*-build/
+Debug/
+Release/
+
+# Archivos temporales y binarios
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+*.qmake.stash
+Makefile*
+ui_*.h
+moc_*.cpp
+qrc_*.cpp
