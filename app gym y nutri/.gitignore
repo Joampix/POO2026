@@ -1,0 +1,11 @@
+.env
+*.pyc
+__pycache__/
+progreso_semanal.json
+progreso_semanal_cpp.json
+*.sqlite
+*.sqlite3
+*.db
+cpp_qt_app/build/
+cpp_qt_app/out/
+*.user

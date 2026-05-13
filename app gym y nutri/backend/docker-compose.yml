@@ -1,0 +1,52 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: conca_gym_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: conca_gym
+      MYSQL_USER: conca_app
+      MYSQL_PASSWORD: conca_app_password
+      MYSQL_ROOT_PASSWORD: conca_root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: conca_gym_phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8081:80"
+
+  api:
+    build: .
+    container_name: conca_gym_api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql+pymysql://conca_app:conca_app_password@mysql:3306/conca_gym
+      SECRET_KEY: cambiar_esta_clave_en_produccion
+      DEFAULT_ADMIN_USERNAME: admin
+      DEFAULT_ADMIN_PASSWORD: admin123
+      DEFAULT_ADMIN_FULL_NAME: Administrador Conca Gym
+    ports:
+      - "8000:8000"
+
+volumes:
+  mysql_data:
